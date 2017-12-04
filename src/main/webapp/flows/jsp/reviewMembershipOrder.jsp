@@ -18,5 +18,8 @@ Magazine language: ${loginBean.magazineLanguage}<br>
 Correspondence language: ${loginBean.correspondenceLanguage}<br>
 Newsletter subscription: ${loginBean.newsletterSubscription}<br>
 
+<a href="${flowExecutionUrl}&_eventId=back">Back</a>
+<a href="${flowExecutionUrl}&_eventId=addToShoppingBag">Add to shopping bag</a>
+
 </body>
 </html>

@@ -5,20 +5,33 @@
 http://www.springframework.org/schema/webflow/spring-webflow-2.4.xsd">
 
 	<var name="loginBean" class="com.jcg.examples.bean.LoginBean" />
+
+	<on-start>
+		<evaluate expression="loginService.getCountries()" result="flowScope.countries"/>
+	</on-start>
 	
-	<view-state id="displayLoginView" view="jsp/login.jsp" model="loginBean">
-		<transition on="performLogin" to="performLoginAction" />
+	<view-state id="enterMembershipCommunicationDetails" view="jsp/enterMembershipCommunicationDetails.jsp" model="loginBean">
+		<transition on="continue" to="reviewMembershipOrder" />
+		<transition on="back" to="cancel" />
 	</view-state>
 
-	<action-state id="performLoginAction">
-		<evaluate expression="loginService.validateUser(loginBean)" />
+	<view-state id="reviewMembershipOrder" view="jsp/reviewMembershipOrder.jsp" model="loginBean">
+		<transition on="back" to="enterMembershipCommunicationDetails" />
+		<transition on="addToShoppingBag" to="scsMembershipAddedToCartConfirmation" />
+	</view-state>
 
-		<transition on="true" to="displaySuccess" />
+	<action-state id="performAddToShoppingBag">
+		<evaluate expression="loginService.addToCart(loginBean)" />
+
+		<transition on="true" to="scsMembershipAddedToCartConfirmation" />
 		<transition on="false" to="displayError" />
-
 	</action-state>
-	
-	<view-state id="displaySuccess" view="jsp/success.jsp" model="loginBean"/>
 
-	<view-state id="displayError" view="jsp/failure.jsp" />
+	<end-state id="scsMembershipAddedToCartConfirmation" view="jsp/scsMembershipAddedToCartConfirmation.jsp">
+	</end-state>
+
+	<view-state id="displayError" view="jsp/failure.jsp" model="loginBean">
+	</view-state>
+
+	<end-state id="cancel" view="jsp/cancel.jsp" />
 </flow>
